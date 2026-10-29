@@ -97,7 +97,7 @@ type Purpose =
 interface ScheduledDeviceEvent {
   at: number;
   apply?: SignalVector;
-  event: Omit<ControllerEventRequest, "event_id" | "observed_at">;
+  event: Pick<ControllerEventRequest, "event_type" | "command_id" | "reported_signals">;
 }
 
 interface EngineState {
@@ -558,7 +558,11 @@ export class MockTrafficService implements TrafficService {
 
     const reported = e.reported_signals ? sanitizeObserved(e.reported_signals) : null;
     const reportedConcrete = reported && DIRECTIONS.every((d) => reported[d] !== "UNKNOWN") ? (reported as SignalVector) : null;
-    if (external && reportedConcrete && e.event_type !== "CONTROLLER_OFFLINE") s.device.deviceSignals = { ...reportedConcrete };
+    if (external && e.event_type !== "CONTROLLER_OFFLINE") {
+      // A controller that reports in is reachable; keep the emulator consistent with external reports.
+      s.device.online = true;
+      if (reportedConcrete) s.device.deviceSignals = { ...reportedConcrete };
+    }
 
     if (e.event_type !== "CONTROLLER_OFFLINE") s.lastContact = now;
 
