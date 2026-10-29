@@ -5,27 +5,20 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * FactoryFlow design system — industrial operations control room.
+ * Calm navy/slate surfaces, cyan for interface accents.
+ * RED / YELLOW / GREEN are reserved for signal and severity semantics only.
  */
 
 @theme inline {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -59,77 +52,89 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-panel: var(--panel);
+  --color-panel-raised: var(--panel-raised);
+  --color-signal-red: var(--signal-red);
+  --color-signal-yellow: var(--signal-yellow);
+  --color-signal-green: var(--signal-green);
+  --color-signal-off: var(--signal-off);
+  --color-signal-unknown: var(--signal-unknown);
+  --color-signal-housing: var(--signal-housing);
+  --color-sev-info: var(--sev-info);
+  --color-sev-ok: var(--sev-ok);
+  --color-sev-warning: var(--sev-warning);
+  --color-sev-critical: var(--sev-critical);
+  --color-ground: var(--ground);
+  --color-road: var(--road);
+  --color-road-edge: var(--road-edge);
+  --color-lane-mark: var(--lane-mark);
+  --color-veh-employee: var(--veh-employee);
+  --color-veh-forklift: var(--veh-forklift);
+  --color-veh-truck: var(--veh-truck);
+  --color-veh-emergency: var(--veh-emergency);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
+  --radius: 0.5rem;
+  --background: oklch(0.165 0.018 252);
+  --foreground: oklch(0.93 0.008 250);
+  --card: oklch(0.198 0.02 252);
+  --card-foreground: oklch(0.93 0.008 250);
+  --popover: oklch(0.215 0.022 252);
+  --popover-foreground: oklch(0.93 0.008 250);
+  --primary: oklch(0.8 0.105 212);
+  --primary-foreground: oklch(0.18 0.03 240);
+  --secondary: oklch(0.255 0.02 252);
+  --secondary-foreground: oklch(0.9 0.01 250);
+  --muted: oklch(0.235 0.018 252);
+  --muted-foreground: oklch(0.67 0.02 250);
+  --accent: oklch(0.275 0.028 238);
+  --accent-foreground: oklch(0.93 0.02 220);
+  --destructive: oklch(0.62 0.19 25);
+  --destructive-foreground: oklch(0.98 0.005 250);
+  --border: oklch(0.295 0.02 252);
+  --input: oklch(0.32 0.02 252);
+  --ring: oklch(0.8 0.105 212);
 
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --panel: oklch(0.198 0.02 252);
+  --panel-raised: oklch(0.225 0.021 252);
+
+  --signal-red: oklch(0.64 0.22 27);
+  --signal-yellow: oklch(0.86 0.16 88);
+  --signal-green: oklch(0.79 0.19 150);
+  --signal-off: oklch(0.255 0.012 252);
+  --signal-unknown: oklch(0.52 0.012 252);
+  --signal-housing: oklch(0.13 0.012 252);
+
+  --sev-info: oklch(0.8 0.105 212);
+  --sev-ok: oklch(0.79 0.17 150);
+  --sev-warning: oklch(0.85 0.15 85);
+  --sev-critical: oklch(0.66 0.21 25);
+
+  --ground: oklch(0.185 0.016 252);
+  --road: oklch(0.245 0.01 252);
+  --road-edge: oklch(0.34 0.014 252);
+  --lane-mark: oklch(0.82 0.01 250 / 0.5);
+  --veh-employee: oklch(0.74 0.025 250);
+  --veh-forklift: oklch(0.68 0.08 235);
+  --veh-truck: oklch(0.72 0.07 190);
+  --veh-emergency: oklch(0.97 0.005 250);
+
+  --chart-1: oklch(0.8 0.105 212);
+  --chart-2: oklch(0.7 0.07 190);
+  --chart-3: oklch(0.68 0.08 235);
+  --chart-4: oklch(0.74 0.025 250);
+  --chart-5: oklch(0.6 0.05 260);
+
+  --sidebar: oklch(0.15 0.017 252);
+  --sidebar-foreground: oklch(0.86 0.01 250);
+  --sidebar-primary: oklch(0.8 0.105 212);
+  --sidebar-primary-foreground: oklch(0.18 0.03 240);
+  --sidebar-accent: oklch(0.225 0.022 245);
+  --sidebar-accent-foreground: oklch(0.95 0.01 230);
+  --sidebar-border: oklch(0.255 0.018 252);
+  --sidebar-ring: oklch(0.8 0.105 212);
 }
 
 @layer base {
@@ -137,8 +142,66 @@
     border-color: var(--color-border);
   }
 
+  html {
+    color-scheme: dark;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "tnum";
   }
+}
+
+@utility panel {
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+@utility label-caps {
+  font-size: 10.5px;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@utility glow-red {
+  filter: drop-shadow(0 0 7px color-mix(in oklab, var(--signal-red) 85%, transparent));
+}
+@utility glow-yellow {
+  filter: drop-shadow(0 0 7px color-mix(in oklab, var(--signal-yellow) 85%, transparent));
+}
+@utility glow-green {
+  filter: drop-shadow(0 0 7px color-mix(in oklab, var(--signal-green) 85%, transparent));
+}
+
+@utility grid-ground {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--border) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--border) 45%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@utility animate-pulse-soft {
+  animation: pulse-soft 1.6s ease-in-out infinite;
 }
