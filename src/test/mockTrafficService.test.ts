@@ -96,6 +96,7 @@ describe("mock traffic engine", () => {
   it("emergency outranks an active manual lease", async () => {
     const { svc, advance } = setup();
     advance(4_000);
+    svc.setEmulator({ autoFlow: false });
     await svc.postManualCommand("A", { request_id: "r3", command: "MANUAL_GREEN_REQUEST", direction: "NORTH" });
     await svc.postSensorEvent(arrive("em", 1, { direction: "EAST", vehicle_type: "EMERGENCY", vehicle_id: "AMB-1" }));
     advance(10_000);
