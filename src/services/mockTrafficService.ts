@@ -427,14 +427,19 @@ export class MockTrafficService implements TrafficService {
         direction,
         vehicle_id,
         vehicle_type,
-        sequence_no: this.s.lastSeq[direction] + 1,
+        sequence_no: Math.max(1, this.s.lastSeq[direction]),
         occurred_at: new Date(this.now()).toISOString(),
       },
       cause,
+      true,
     );
   }
 
-  private ingest(e: SensorEventRequest, cause: string): SensorEventResult {
+  /**
+   * @param internal Simulator-generated departures/seed fixtures come from a separate
+   *   emulated sensor stream, so they bypass the per-direction sequence check.
+   */
+  private ingest(e: SensorEventRequest, cause: string, internal = false): SensorEventResult {
     const correlation_id = this.id("corr");
     const base = { event_id: e?.event_id ?? "—", correlation_id };
     const reject = (http_status: number, message: string, result: SensorEventResult["result"] = "rejected"): SensorEventResult => {
@@ -470,7 +475,7 @@ export class MockTrafficService implements TrafficService {
       return r;
     };
 
-    if (e.sequence_no <= this.s.lastSeq[e.direction]) {
+    if (!internal && e.sequence_no <= this.s.lastSeq[e.direction]) {
       return store(reject(409, `Stale sequence_no ${e.sequence_no} ≤ last accepted ${this.s.lastSeq[e.direction]} for ${e.direction}`, "stale"));
     }
 
@@ -483,7 +488,7 @@ export class MockTrafficService implements TrafficService {
       if (idx < 0) return store(reject(422, `Vehicle ${e.vehicle_id} is not queued at ${e.direction}; nothing to clear`));
       this.s.vehicles.splice(idx, 1);
     }
-    this.s.lastSeq[e.direction] = e.sequence_no;
+    if (!internal) this.s.lastSeq[e.direction] = e.sequence_no;
     const vt = e.vehicle_type ?? null;
     const r = store({ ...base, result: "accepted", http_status: 202, message: `${e.event_type} applied (${e.direction} seq ${e.sequence_no})` });
     this.log(vt === "EMERGENCY" ? "EMERGENCY" : "VEHICLE", e.event_type, {
